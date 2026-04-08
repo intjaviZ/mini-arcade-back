@@ -1,7 +1,7 @@
 from ..state.state import state
 
 def ingresar_a_sala(nombre, id):
-    if id not in state.salas: return {"error": "Sala no existe"}
+    if id not in state.salas: return {"error": "La sala no existe"}
 
     sala = state.salas[id]
 
@@ -17,7 +17,7 @@ def ingresar_a_sala(nombre, id):
     return sala
 
 def cerrar_sala(nombre, id):
-    if id not in state.salas: return {"error": "Sala no existe"}
+    if id not in state.salas: return {"error": "La sala no existe"}
 
     sala = state.salas[id]
     
@@ -26,3 +26,8 @@ def cerrar_sala(nombre, id):
     sala.estado = "finished"
     del state.salas[id]
     return sala
+
+def obtener_sala(id):
+    if id not in state.salas: return None
+    return state.salas[id]
+    

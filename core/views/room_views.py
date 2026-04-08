@@ -5,7 +5,7 @@ from ..utils.validators import validar_nombre, validar_juego, validar_id
 from ..utils.generar_codigo import generar_ID
 from ..state.state import state, Sala
 from ..serializers.serializers import Sala_serializer
-from ..services.room_services import ingresar_a_sala, cerrar_sala
+from ..services.room_services import ingresar_a_sala, cerrar_sala, obtener_sala
 
 class AnfitrionSala(APIView):
     def get(self, request):
@@ -72,7 +72,14 @@ class AnfitrionSala(APIView):
                 "error": str(e)
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
+class StateSala(APIView):
+    def get(self, request, id):
+        sala = obtener_sala(id)
         
+        if sala is None: return Response({"error": "Sala no existe"}, status=status.HTTP_404_NOT_FOUND)
+        
+        response = Sala_serializer(sala).data
+        return Response(response, status=status.HTTP_200_OK)
         
 class InvitadoSala(APIView):
     def post(self, request):
