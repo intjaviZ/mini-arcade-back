@@ -13,7 +13,6 @@ def validar_juego(juego):
     if not isinstance(juego, str): return False
     if juego == "gato": return True
     elif juego == "conecta4": return True
-    elif juego == "ahorcado": return True
     
     return False
 

@@ -1,19 +1,27 @@
-from ..state.state import state
+from ..state.state import state, Sala
+from ..utils.generar_codigo import generar_ID
+
+def crear_sala(nombre, tipo_juego):
+    id_sala = generar_ID()
+    
+    sala = Sala(
+        id_sala= id_sala,
+        anfitrion = nombre,
+        tipo_juego= tipo_juego
+    )
+    state.salas[id_sala] = sala
+    return sala
 
 def ingresar_a_sala(nombre, id):
     if id not in state.salas: return {"error": "La sala no existe"}
 
     sala = state.salas[id]
 
-    if sala.invitado is not None: return {"error": "Sala llena"}
-
-    # 3. Evitar que el anfitrión se una como invitado
     if sala.anfitrion == nombre: return {"error": "Ya eres el anfitrión"}
-
-    # 4. Asignar invitado
+    if sala.invitado is not None: return {"error": "Sala llena"}
+    
     sala.invitado = nombre
     sala.estado = "ready"
-
     return sala
 
 def cerrar_sala(nombre, id):

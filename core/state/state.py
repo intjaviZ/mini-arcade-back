@@ -1,8 +1,6 @@
 class State:
     def __init__(self):
         self.salas = {}
-        # self.espera = []
-        # self.activas = {}
 
 class Sala:
     def __init__(self, id_sala, anfitrion, tipo_juego):
@@ -10,9 +8,7 @@ class Sala:
         self.anfitrion = anfitrion
         self.invitado = None
         self.tipo_juego = tipo_juego
-        self.tablero = []
-        self.turno = anfitrion
-        self.ganador = None
+        self.juego  = None
         self.estado = "waiting"
         
 state = State()

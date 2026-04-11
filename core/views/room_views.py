@@ -2,17 +2,17 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from ..utils.validators import validar_nombre, validar_juego, validar_id
-from ..utils.generar_codigo import generar_ID
-from ..state.state import state, Sala
+from ..utils.generador_diccionarios import to_dict
+from ..state.state import state
 from ..serializers.serializers import Sala_serializer
-from ..services.room_services import ingresar_a_sala, cerrar_sala, obtener_sala
+from ..services.room_services import crear_sala, ingresar_a_sala, cerrar_sala, obtener_sala
 
 class AnfitrionSala(APIView):
     def get(self, request):
         raw = {}
-
+        
         for id_sala, sala in state.salas.items():
-            raw[id_sala] = sala.__dict__
+            raw[id_sala] = to_dict(sala)
             
         return Response(raw)
     
@@ -28,16 +28,8 @@ class AnfitrionSala(APIView):
             return Response( {"error": "Datos no válidos" }, status=status.HTTP_400_BAD_REQUEST)
             
         try:
-            id_sala = generar_ID()
-            
-            nueva_sala = Sala(
-                id_sala= id_sala,
-                anfitrion=nombre,
-                tipo_juego=juego
-            )
-            state.salas[id_sala] = nueva_sala
-            
-            response = Sala_serializer(state.salas[id_sala]).data
+            nueva_sala = crear_sala(nombre, juego)
+            response = Sala_serializer(nueva_sala).data
             return Response(response, status=status.HTTP_201_CREATED)
         
         except Exception as e:
